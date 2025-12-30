@@ -9,8 +9,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <style>
+        /* =========================================
+           1. CORE VARIABLES & RESET
+           ========================================= */
         :root {
-            --primary: #1a73e8;
+            /* Colors */
+            --primary: #1a73e8;       /* Google Blue */
             --primary-dark: #1557b0;
             --surface: #ffffff;
             --surface-variant: #f8f9fa;
@@ -18,6 +22,7 @@
             --outline: #dadce0;
             --cursor-color: #1a73e8;
             
+            /* Spacing & Layout */
             --nav-height: 70px;
             --radius-lg: 24px;
             --radius-pill: 50px;
@@ -34,7 +39,7 @@
             --cursor-color: #8ab4f8;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; /* Hide default cursor */ }
 
         html { scroll-behavior: smooth; }
 
@@ -47,14 +52,33 @@
             transition: background 0.3s, color 0.3s;
         }
 
-        a, button, input, textarea, .nav-item { cursor: none; }
-
-        .container {
-            max-width: var(--container-width);
-            margin: 0 auto;
-            padding: 0 24px;
+        /* Scroll Progress Bar */
+        #progress-bar {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: var(--primary); width: 0%; z-index: 99999;
         }
 
+        /* Custom Cursor */
+        a, button, input, textarea, .nav-item { cursor: none; }
+        
+        .cursor-dot, .cursor-outline {
+            position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
+            border-radius: 50%; z-index: 9999; pointer-events: none;
+        }
+        .cursor-dot { width: 8px; height: 8px; background-color: var(--cursor-color); }
+        .cursor-outline {
+            width: 40px; height: 40px; border: 1px solid var(--cursor-color);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        body.hovering .cursor-outline {
+            width: 60px; height: 60px; background-color: rgba(26, 115, 232, 0.1); border-color: transparent;
+        }
+
+        .container { max-width: var(--container-width); margin: 0 auto; padding: 0 24px; }
+
+        /* =========================================
+           2. CUSTOM CURSOR & PRELOADER
+           ========================================= */
         .preloader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: var(--surface); z-index: 9999;
@@ -71,34 +95,14 @@
         @keyframes spin { 100% { transform: rotate(360deg); } }
         .preloader.fade-out { opacity: 0; visibility: hidden; }
 
-        .cursor-dot, .cursor-outline {
-            position: fixed; top: 0; left: 0;
-            transform: translate(-50%, -50%);
-            border-radius: 50%; z-index: 9999;
-            pointer-events: none;
-        }
-        .cursor-dot {
-            width: 8px; height: 8px; background-color: var(--cursor-color);
-        }
-        .cursor-outline {
-            width: 40px; height: 40px;
-            border: 1px solid var(--cursor-color);
-            transition: width 0.2s, height 0.2s, background-color 0.2s;
-        }
-        body.hovering .cursor-outline {
-            width: 60px; height: 60px;
-            background-color: rgba(26, 115, 232, 0.1);
-            border-color: transparent;
-        }
-
+        /* =========================================
+           3. NAVBAR & BUTTONS
+           ========================================= */
         header {
             position: fixed; top: 0; width: 100%; height: var(--nav-height);
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            z-index: 1000;
-            display: flex; align-items: center;
-            transition: 0.3s;
+            background: rgba(255,255,255,0.05); backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.1); z-index: 1000;
+            display: flex; align-items: center; transition: 0.3s;
         }
         [data-theme="light"] header { background: rgba(255,255,255,0.85); border-color: rgba(0,0,0,0.05); }
         [data-theme="dark"] header { background: rgba(18,18,18,0.85); border-color: rgba(255,255,255,0.05); }
@@ -106,100 +110,84 @@
         .nav-container { display: flex; justify-content: space-between; align-items: center; width: 100%; }
         
         .logo { 
-            font-size: 1.4rem; 
-            font-weight: 700; 
-            display: flex; 
-            align-items: center; 
-            gap: 8px; 
-            color: var(--on-surface);
-            pointer-events: none;
+            font-size: 1.4rem; font-weight: 700; display: flex; align-items: center; gap: 8px; 
+            color: var(--on-surface); pointer-events: none;
         }
         
         .nav-links { display: flex; gap: 32px; list-style: none; }
-        
         .nav-item { 
-            font-weight: 500; 
-            opacity: 0.7; 
-            transition: 0.3s; 
-            position: relative; 
-            cursor: none;
-            color: var(--on-surface);
+            font-weight: 500; opacity: 0.7; transition: 0.3s; position: relative; color: var(--on-surface);
         }
         .nav-item:hover, .nav-item.active { opacity: 1; color: var(--primary); }
 
+        /* Buttons */
+        .magnetic-btn { display: inline-block; }
         .btn {
             display: inline-flex; align-items: center; justify-content: center;
             padding: 12px 32px; border-radius: var(--radius-pill);
-            font-weight: 600; border: none; transition: 0.3s;
-            position: relative; overflow: hidden;
-            cursor: none;
+            font-weight: 600; border: none; transition: 0.3s; position: relative; overflow: hidden;
         }
         .btn-primary { background: var(--primary); color: #fff; box-shadow: 0 4px 15px rgba(26, 115, 232, 0.3); }
         .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(26, 115, 232, 0.4); }
-        
         .btn-outline { border: 2px solid var(--outline); background: transparent; color: var(--on-surface); }
         .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
 
         .theme-toggle { background: transparent; border: none; padding: 8px; border-radius: 50%; color: var(--on-surface); transition: 0.3s; }
         .theme-toggle:hover { background: var(--surface-variant); color: var(--primary); transform: rotate(15deg); }
 
+        /* =========================================
+           4. HERO SECTION
+           ========================================= */
         .hero {
-            min-height: 100vh; position: relative;
-            display: flex; align-items: center; padding-top: var(--nav-height);
-            overflow: hidden;
+            min-height: 100vh; position: relative; display: flex; align-items: center;
+            padding-top: var(--nav-height); overflow: hidden;
         }
-        
         #hero-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.6; }
 
         .hero-wrapper {
-            position: relative; z-index: 1;
-            display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem;
-            align-items: center;
+            position: relative; z-index: 1; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; align-items: center;
         }
 
         .hero-content h2 { font-size: 1.1rem; color: var(--primary); font-weight: 600; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 2px; }
-        
-        .hero-content h1 {
-            font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem;
-        }
+        .hero-content h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
         
         .typewriter-text { color: var(--primary); border-right: 3px solid var(--primary); padding-right: 5px; animation: blink 0.7s infinite; }
         @keyframes blink { 50% { border-color: transparent; } }
 
         .hero-content p { font-size: 1.1rem; opacity: 0.8; margin-bottom: 2rem; max-width: 550px; }
 
-        .profile-box {
-            position: relative; width: 350px; height: 350px; margin: 0 auto;
-        }
+        .profile-box { position: relative; width: 350px; height: 350px; margin: 0 auto; }
         .profile-img {
             width: 100%; height: 100%; object-fit: cover;
-            border-radius: 50%; border: 8px solid var(--surface-variant);
-            position: relative; z-index: 2;
+            border-radius: 50%; border: 8px solid var(--surface-variant); position: relative; z-index: 2;
         }
         .profile-bg-circle {
             position: absolute; top: -10px; left: -10px; right: -10px; bottom: -10px;
-            border-radius: 50%; border: 2px dashed var(--primary);
-            z-index: 1; animation: rotateCircle 10s linear infinite;
+            border-radius: 50%; border: 2px dashed var(--primary); z-index: 1; animation: rotateCircle 10s linear infinite;
         }
         @keyframes rotateCircle { 100% { transform: rotate(360deg); } }
 
+        /* =========================================
+           5. SCROLL ANIMATIONS
+           ========================================= */
         .reveal { opacity: 0; transform: translateY(50px); transition: 1s cubic-bezier(0.5, 0, 0, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
-        
         .reveal-left { opacity: 0; transform: translateX(-50px); transition: 1s cubic-bezier(0.5, 0, 0, 1); }
         .reveal-left.active { opacity: 1; transform: translateX(0); }
-
         .reveal-right { opacity: 0; transform: translateX(50px); transition: 1s cubic-bezier(0.5, 0, 0, 1); }
         .reveal-right.active { opacity: 1; transform: translateX(0); }
 
+        /* =========================================
+           6. SECTIONS
+           ========================================= */
         section { padding: 100px 0; }
-        
         .section-header { text-align: center; margin-bottom: 60px; }
         .section-title { font-size: 2.5rem; font-weight: 700; margin-bottom: 10px; }
         .section-line { width: 60px; height: 5px; background: var(--primary); margin: 0 auto; border-radius: 5px; }
 
+        /* Skills Grid */
         .skills-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px;
         }
         .skill-card {
             background: var(--surface-variant); padding: 40px 20px;
@@ -209,51 +197,40 @@
         .skill-card:hover { border-color: var(--primary); transform: translateY(-10px); background: var(--surface); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
         .skill-card i { font-size: 3rem; margin-bottom: 20px; }
 
+        /* Projects Grid */
         .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
-        
         .project-card {
-            background: var(--surface); border-radius: var(--radius-lg);
-            overflow: hidden; border: 1px solid var(--outline);
-            transition: transform 0.1s;
-            transform-style: preserve-3d; perspective: 1000px;
+            background: var(--surface); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--outline);
+            transition: transform 0.1s; transform-style: preserve-3d; perspective: 1000px;
         }
-        
         .card-image-wrapper { height: 220px; overflow: hidden; position: relative; }
         .card-image-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
         .project-card:hover .card-image-wrapper img { transform: scale(1.1); }
-        
         .card-content { padding: 30px; }
         .card-content h3 { font-size: 1.5rem; margin-bottom: 10px; }
         .card-content p { opacity: 0.7; font-size: 0.95rem; margin-bottom: 20px; }
-        
-        .tech-tags span {
-            font-size: 0.8rem; background: var(--surface-variant); 
-            padding: 5px 12px; border-radius: 20px; margin-right: 5px; font-weight: 600; color: var(--primary);
-        }
+        .tech-tags span { font-size: 0.8rem; background: var(--surface-variant); padding: 5px 12px; border-radius: 20px; margin-right: 5px; font-weight: 600; color: var(--primary); }
 
+        /* Contact */
         .contact-container {
             display: grid; grid-template-columns: 1fr 1.5fr; gap: 50px;
             background: var(--surface-variant); padding: 50px; border-radius: var(--radius-lg);
         }
         .info-item { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; font-size: 1.1rem; }
-        .info-item i { color: var(--primary); font-size: 1.5rem; }
-        
-        .form-group { margin-bottom: 20px; position: relative; }
         .form-control {
             width: 100%; padding: 16px; border-radius: 10px; border: 1px solid var(--outline);
-            background: var(--surface); color: var(--on-surface); font-size: 1rem; font-family: inherit;
-            transition: 0.3s; outline: none;
+            background: var(--surface); color: var(--on-surface); font-size: 1rem; outline: none; transition: 0.3s;
         }
         .form-control:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.1); }
         .error-txt { color: #d32f2f; font-size: 0.85rem; margin-top: 5px; display: none; }
         .form-control.error { border-color: #d32f2f; }
         .form-control.error + .error-txt { display: block; }
 
+        /* Modal */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
-            z-index: 2000; opacity: 0; visibility: hidden; transition: 0.3s;
-            display: flex; justify-content: center; align-items: center; padding: 20px;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 2000;
+            opacity: 0; visibility: hidden; transition: 0.3s; display: flex; justify-content: center; align-items: center; padding: 20px;
         }
         .modal-overlay.active { opacity: 1; visibility: visible; }
         .modal-box {
@@ -264,28 +241,23 @@
         .modal-overlay.active .modal-box { transform: scale(1); }
         .close-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 1.5rem; color: var(--on-surface); }
 
+        /* Responsive */
         @media (max-width: 900px) {
             .hero-wrapper { grid-template-columns: 1fr; text-align: center; }
             .hero-text { order: 2; }
             .hero-image-box { order: 1; margin: 0 auto; }
             .profile-box { width: 280px; height: 280px; }
             .contact-container { grid-template-columns: 1fr; }
+            .skills-grid { grid-template-columns: repeat(2, 1fr); }
         }
-        
         @media (max-width: 768px) {
-            .nav-links {
-                position: fixed; top: var(--nav-height); left: 0; width: 100%; height: 100vh;
-                background: var(--surface); flex-direction: column; padding: 40px;
-                transform: translateX(100%); transition: 0.4s;
-            }
+            .nav-links { position: fixed; top: var(--nav-height); left: 0; width: 100%; height: 100vh; background: var(--surface); flex-direction: column; padding: 40px; transform: translateX(100%); transition: 0.4s; }
             .nav-links.active { transform: translateX(0); }
             .hamburger { display: block; font-size: 1.5rem; color: var(--on-surface); border: none; background: none; }
             .skills-grid { grid-template-columns: 1fr; }
         }
-        
         @media (min-width: 769px) { .hamburger { display: none; } }
         @media (hover: none) { .cursor-dot, .cursor-outline { display: none; } * { cursor: auto; } }
-
     </style>
 </head>
 <body>
@@ -293,6 +265,8 @@
     <div class="preloader" id="preloader">
         <div class="loader-spinner"></div>
     </div>
+
+    <div id="progress-bar"></div>
 
     <div class="cursor-dot" data-cursor-dot></div>
     <div class="cursor-outline" data-cursor-outline></div>
@@ -309,6 +283,7 @@
                     <ul class="nav-links" id="nav-links">
                         <li><span class="nav-item magnetic-btn" onclick="scrollToSection('home')">Home</span></li>
                         <li><span class="nav-item magnetic-btn" onclick="scrollToSection('about')">About</span></li>
+                        <li><span class="nav-item magnetic-btn" onclick="scrollToSection('skills')">Skills</span></li>
                         <li><span class="nav-item magnetic-btn" onclick="scrollToSection('projects')">Projects</span></li>
                         <li><span class="nav-item magnetic-btn" onclick="scrollToSection('contact')">Contact</span></li>
                     </ul>
@@ -326,7 +301,8 @@
     </header>
 
     <section id="home" class="hero">
-        <canvas id="hero-canvas"></canvas> <div class="container hero-wrapper">
+        <canvas id="hero-canvas"></canvas>
+        <div class="container hero-wrapper">
             <div class="hero-text reveal-left">
                 <h1>Hi, I'm Pulkit.<br>I am a <span class="typewriter-text" id="typewriter"></span></h1>
                 <p>
@@ -337,7 +313,6 @@
                     <button class="btn btn-outline magnetic-btn" onclick="scrollToSection('contact')">Contact Me</button>
                 </div>
             </div>
-
             <div class="hero-image-box reveal-right">
                 <div class="profile-box">
                     <div class="profile-bg-circle"></div>
@@ -353,33 +328,46 @@
                 <h2 class="section-title">About Me</h2>
                 <div class="section-line"></div>
             </div>
-            <div style="max-width: 800px; margin: 0 auto; text-align: center; margin-bottom: 50px;" class="reveal">
+            <div style="max-width: 800px; margin: 0 auto; text-align: center;" class="reveal">
                 <p style="font-size: 1.1rem; line-height: 1.8; opacity: 0.9;">
                     I am Pulkit Aryan Singh, currently pursuing a <strong>B.Tech in Computer Science</strong>. My passion lies in understanding how things work under the hood of the web. I have honed my skills in <strong>HTML, CSS, JavaScript, and C Programming</strong>. I am always eager to learn new technologies and solve real-world problems through code.
                 </p>
             </div>
+        </div>
+    </section>
 
+    <section id="skills" style="background: var(--surface);">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 class="section-title">My Skills</h2>
+                <div class="section-line"></div>
+            </div>
             <div class="skills-grid">
-                <div class="skill-card reveal">
+                <div class="skill-card tilt-card reveal">
                     <i class="fab fa-html5" style="color: #e34f26;"></i>
                     <h3>HTML5</h3>
-                    <p>Semantic markup & Accessibility</p>
+                    <p>Semantic markup & SEO</p>
                 </div>
-                <div class="skill-card reveal">
+                <div class="skill-card tilt-card reveal">
                     <i class="fab fa-css3-alt" style="color: #264de4;"></i>
                     <h3>CSS3</h3>
-                    <p>Animations, Grid & Flexbox</p>
+                    <p>Grid, Flexbox & Animations</p>
                 </div>
-                <div class="skill-card reveal">
+                <div class="skill-card tilt-card reveal">
                     <i class="fab fa-js" style="color: #f7df1e;"></i>
                     <h3>JavaScript</h3>
-                    <p>ES6+, DOM & Logic</p>
+                    <p>ES6+, DOM & Interactivity</p>
+                </div>
+                <div class="skill-card tilt-card reveal">
+                    <i class="fas fa-code" style="color: #659ad2;"></i>
+                    <h3>C Lang</h3>
+                    <p>Algorithms & Logic Building</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="projects">
+    <section id="projects" style="background: var(--surface-variant);">
         <div class="container">
             <div class="section-header reveal">
                 <h2 class="section-title">Projects</h2>
@@ -433,7 +421,7 @@
         </div>
     </section>
 
-    <section id="contact" style="background: var(--surface-variant);">
+    <section id="contact" style="background: var(--surface);">
         <div class="container">
             <div class="section-header reveal">
                 <h2 class="section-title">Get In Touch</h2>
@@ -483,38 +471,39 @@
     </div>
 
     <script>
+        // 1. SCROLL FUNCTION
         function scrollToSection(id) {
             const section = document.getElementById(id);
             if(section) {
-                window.scrollTo({
-                    top: section.offsetTop - 80, 
-                    behavior: 'smooth'
-                });
-                
+                window.scrollTo({ top: section.offsetTop - 80, behavior: 'smooth' });
                 document.getElementById('nav-links').classList.remove('active');
             }
         }
 
+        // 2. PRELOADER & SCROLL BAR
         window.addEventListener("load", () => {
             const preloader = document.getElementById("preloader");
             preloader.classList.add("fade-out");
             setTimeout(() => preloader.style.display = "none", 500);
         });
 
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const progress = (scrollTop / scrollHeight) * 100;
+            document.getElementById('progress-bar').style.width = progress + "%";
+        });
+
+        // 3. CUSTOM CURSOR
         const cursorDot = document.querySelector("[data-cursor-dot]");
         const cursorOutline = document.querySelector("[data-cursor-outline]");
 
         window.addEventListener("mousemove", function (e) {
             const posX = e.clientX;
             const posY = e.clientY;
-
             cursorDot.style.left = `${posX}px`;
             cursorDot.style.top = `${posY}px`;
-
-            cursorOutline.animate({
-                left: `${posX}px`,
-                top: `${posY}px`
-            }, { duration: 500, fill: "forwards" });
+            cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
         });
 
         const hoverables = document.querySelectorAll('.nav-item, .magnetic-btn, .tilt-card');
@@ -523,6 +512,7 @@
             el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
         });
 
+        // 4. TYPEWRITER EFFECT
         const words = ["Developer.", "Student.", "Creator.", "Problem Solver."];
         let i = 0;
         let timer;
@@ -558,6 +548,7 @@
         }
         typingEffect();
 
+        // 5. SCROLL REVEAL (Intersection Observer)
         const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -569,6 +560,7 @@
 
         revealElements.forEach(el => revealObserver.observe(el));
 
+        // 6. SCROLL SPY
         const sections = document.querySelectorAll('section');
         const navItems = document.querySelectorAll('.nav-item');
 
@@ -589,6 +581,7 @@
             });
         });
 
+        // 7. 3D TILT EFFECT
         const tiltCards = document.querySelectorAll('.tilt-card');
         tiltCards.forEach(card => {
             card.addEventListener('mousemove', (e) => {
@@ -597,18 +590,16 @@
                 const y = e.clientY - rect.top;
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
-                
                 const rotateX = (centerY - y) / 15;
                 const rotateY = (x - centerX) / 15;
-                
                 card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
             });
-
             card.addEventListener('mouseleave', () => {
                 card.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale(1)`;
             });
         });
 
+        // 8. MAGNETIC BUTTONS
         const magneticBtns = document.querySelectorAll('.magnetic-btn');
         magneticBtns.forEach(btn => {
             btn.addEventListener('mousemove', (e) => {
@@ -622,9 +613,9 @@
             });
         });
 
+        // 9. THEME TOGGLE
         const themeBtn = document.getElementById('theme-toggle');
         const html = document.documentElement;
-        
         const savedTheme = localStorage.getItem('theme') || 'light';
         html.setAttribute('data-theme', savedTheme);
         updateThemeIcon(savedTheme);
@@ -641,11 +632,11 @@
             themeBtn.querySelector('span').innerText = theme === 'light' ? 'dark_mode' : 'light_mode';
         }
 
+        // 10. FORM VALIDATION
         document.getElementById('contact-form').addEventListener('submit', function(e) {
             e.preventDefault();
             let valid = true;
             const inputs = this.querySelectorAll('.form-control');
-            
             inputs.forEach(input => {
                 if(!input.value.trim()) {
                     input.classList.add('error');
@@ -654,23 +645,21 @@
                     input.classList.remove('error');
                 }
             });
-
             if(valid) {
                 alert('Message Sent Successfully! (Demo)');
                 this.reset();
             }
         });
 
+        // 11. MODAL LOGIC
         const modalOverlay = document.getElementById('modal-overlay');
         const modalTitle = document.getElementById('modal-title');
         const modalDesc = document.getElementById('modal-desc');
-
         const projectDetails = {
             'modal-1': { title: 'E-Commerce Dashboard', desc: 'A full-stack capable frontend for an e-commerce platform. It features product sorting, cart management logic, and a responsive grid layout using CSS Grid and Flexbox.' },
             'modal-2': { title: 'Weather App', desc: 'This app connects to the OpenWeatherMap API to fetch real-time data. It features error handling for invalid cities and updates the UI dynamically based on the weather conditions.' },
             'modal-3': { title: 'Task Manager', desc: 'A productivity app that allows users to Create, Read, Update, and Delete tasks. It utilizes Browser LocalStorage to save data, so tasks persist even after a page refresh.' }
         };
-
         function openModal(id) {
             const data = projectDetails[id];
             if(data) {
@@ -679,20 +668,18 @@
                 modalOverlay.classList.add('active');
             }
         }
-
         function closeModal() {
             modalOverlay.classList.remove('active');
         }
-
         modalOverlay.addEventListener('click', (e) => {
             if(e.target === modalOverlay) closeModal();
         });
 
+        // 12. CANVAS PARTICLES
         const canvas = document.getElementById('hero-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-
         let particles = [];
         class Particle {
             constructor() {
@@ -719,7 +706,6 @@
                 ctx.fill();
             }
         }
-
         function init() {
             for(let i=0; i<60; i++) particles.push(new Particle());
         }
@@ -733,7 +719,6 @@
         }
         init();
         animate();
-        
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
