@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pulkit Aryan Singh | The Experience</title>
-    
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
@@ -27,10 +25,9 @@
             --secondary: #7000ff;
             --glass: rgba(255, 255, 255, 0.03);
             --border: rgba(255, 255, 255, 0.1);
+            --cursor-bg: #fff;
             --blob-color: rgba(112,0,255,0.15);
             --noise-opacity: 0.07;
-            /* Cursor must be WHITE to show as WHITE on Dark BG with 'difference' */
-            --cursor-bg: #ffffff; 
         }
 
         [data-theme="light"] {
@@ -40,10 +37,9 @@
             --secondary: #ccff00;
             --glass: rgba(255, 255, 255, 0.6);
             --border: rgba(0, 0, 0, 0.1);
+            --cursor-bg: #ffffff;
             --blob-color: rgba(85, 0, 255, 0.1);
             --noise-opacity: 0.04;
-            /* Cursor must be WHITE to show as BLACK on Light BG with 'difference' */
-            --cursor-bg: #ffffff; 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
@@ -60,7 +56,7 @@
         html { scroll-behavior: smooth; }
 
         /* =========================================
-           2. EFFECTS (Noise, Light, Cursor)
+           2. EFFECTS
            ========================================= */
         .noise-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -77,12 +73,8 @@
 
         .cursor {
             position: fixed; top: 0; left: 0; width: 20px; height: 20px;
-            background: var(--cursor-bg); 
-            border-radius: 50%; 
-            pointer-events: none; 
-            z-index: 9999;
-            transform: translate(-50%, -50%); 
-            mix-blend-mode: difference; /* This inverts colors */
+            background: var(--cursor-bg); border-radius: 50%; pointer-events: none; z-index: 9999;
+            transform: translate(-50%, -50%); mix-blend-mode: difference;
             transition: width 0.3s, height 0.3s, transform 0.1s;
         }
         body.hovering .cursor { width: 80px; height: 80px; }
@@ -187,7 +179,7 @@
         }
 
         /* =========================================
-           5. SKILLS MARQUEE
+           5. SKILLS MARQUEE (Visual Separator)
            ========================================= */
         .marquee-section {
             padding: 100px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
@@ -206,11 +198,13 @@
         @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         /* =========================================
-           6. ABOUT & TECH STACK
+           6. ABOUT SECTION
            ========================================= */
+        section { padding: 150px 0; position: relative; z-index: 2; }
+        
         .about-section {
-            padding: 150px 10vw; display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px;
-            align-items: center; position: relative; z-index: 2;
+            padding: 150px 10vw; display: grid; grid-template-columns: 1fr 2fr; gap: 80px;
+            align-items: center;
         }
 
         .section-label {
@@ -218,30 +212,44 @@
             margin-bottom: 20px; display: block;
         }
 
-        .about-text p { font-size: 1.8rem; line-height: 1.4; margin-bottom: 40px; }
+        .about-text p { font-size: 2rem; line-height: 1.4; margin-bottom: 40px; }
         .highlight { color: var(--text); font-weight: 600; border-bottom: 2px solid var(--accent); }
 
-        /* TECH STACK GRID */
-        .tech-stack-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
-        }
-
-        .tech-card {
-            background: var(--glass); border: 1px solid var(--border);
-            padding: 25px; display: flex; align-items: center; gap: 15px;
-            transition: 0.4s; position: relative; overflow: hidden;
+        /* =========================================
+           7. SKILLS SECTION
+           ========================================= */
+        .skills-list-container {
+            padding: 0 10vw;
         }
         
-        .tech-card i { font-size: 2rem; color: var(--text); transition: 0.3s; }
-        .tech-card span { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .skills-grid-visual {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px;
+            margin-top: 50px;
+        }
 
-        .tech-card:hover { border-color: var(--accent); transform: translateX(10px); background: rgba(255,255,255,0.05); }
-        .tech-card:hover i { color: var(--accent); }
+        .visual-skill-card {
+            background: var(--glass); border: 1px solid var(--border);
+            padding: 40px 20px; text-align: center; border-radius: 4px;
+            transition: 0.4s; position: relative; overflow: hidden;
+        }
+
+        .visual-skill-card i { font-size: 3.5rem; color: var(--text); margin-bottom: 20px; transition: 0.3s; }
+        .visual-skill-card h3 { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; text-transform: uppercase; }
+        
+        /* Hover Effect */
+        .visual-skill-card:hover { transform: translateY(-10px); border-color: var(--accent); box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5); }
+        .visual-skill-card:hover i { color: var(--accent); transform: scale(1.1); }
+        .visual-skill-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, var(--accent) 0%, transparent 70%);
+            opacity: 0; transition: 0.4s; z-index: -1;
+        }
+        .visual-skill-card:hover::before { opacity: 0.1; }
 
         /* =========================================
-           7. PROJECTS (Horizontal Scroll)
+           8. PROJECTS (Horizontal Scroll)
            ========================================= */
-        .projects-section { padding: 150px 0; position: relative; z-index: 2; overflow: hidden; }
+        .projects-section { overflow: hidden; }
         
         .project-nav {
             display: flex; justify-content: flex-end; gap: 15px; margin-bottom: 30px; padding-right: 10vw;
@@ -255,8 +263,7 @@
 
         .projects-container {
             padding: 0 10vw; display: flex; gap: 40px; overflow-x: auto;
-            /* Scroll fix for JS */
-            scroll-behavior: auto !important; 
+            scroll-behavior: auto !important; /* JS Scroll */
             padding-bottom: 50px; -ms-overflow-style: none; scrollbar-width: none;
         }
         .projects-container::-webkit-scrollbar { display: none; }
@@ -282,7 +289,7 @@
         .card-tags { display: flex; gap: 10px; font-size: 0.8rem; text-transform: uppercase; color: var(--accent); }
 
         /* =========================================
-           8. FOOTER
+           9. FOOTER
            ========================================= */
         footer {
             padding: 100px 10vw; border-top: 1px solid var(--border);
@@ -307,7 +314,7 @@
         .email-btn:hover::before { transform: scaleX(1); transform-origin: left; }
 
         /* =========================================
-           9. MODALS & FORMS
+           10. MODALS & FORMS
            ========================================= */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -323,7 +330,7 @@
         .close-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 1.5rem; color: var(--text); }
 
         /* =========================================
-           10. RESPONSIVE
+           11. RESPONSIVE
            ========================================= */
         @media (max-width: 768px) {
             header { padding: 0 20px; }
@@ -340,7 +347,7 @@
             .about-section { grid-template-columns: 1fr; padding: 100px 5vw; }
             .about-text p { font-size: 1.5rem; }
             .project-card { min-width: 85vw; }
-            .tech-stack-grid { grid-template-columns: 1fr; }
+            .skills-grid-visual { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -359,7 +366,7 @@
             <ul class="nav-links" id="nav-links">
                 <li><a href="#home" class="nav-link hover-trigger">Home</a></li>
                 <li><a href="#about" class="nav-link hover-trigger">About</a></li>
-                <li><a href="#skills" class="nav-link hover-trigger">Skills</a></li>
+                <li><a href="#skills-list" class="nav-link hover-trigger">Skills</a></li>
                 <li><a href="#projects" class="nav-link hover-trigger">Projects</a></li>
                 <li><a href="#contact" class="nav-link hover-trigger">Contact</a></li>
             </ul>
@@ -386,7 +393,7 @@
         <div class="scroll-down">Scroll Down <i class="fas fa-long-arrow-alt-right"></i></div>
     </section>
 
-    <div id="skills" class="marquee-section">
+    <div class="marquee-section">
         <div class="marquee-content">
             <span class="marquee-item">HTML5</span>
             <span class="marquee-item">CSS3</span>
@@ -407,43 +414,50 @@
         <div class="col-right">
             <div class="about-text">
                 <p>I am a <span class="highlight">digital craftsman</span> based in Chhattisgarh, India. Currently pursuing my B.Tech in Computer Science.</p>
-                <p style="font-size: 1.2rem; opacity: 0.7;">I bridge the gap between <span class="highlight">design</span> and <span class="highlight">engineering</span>. I don't just write code; I create immersive digital experiences.</p>
+                <p style="font-size: 1.2rem; opacity: 0.7;">I bridge the gap between <span class="highlight">design</span> and <span class="highlight">engineering</span>. I don't just write code; I create immersive digital experiences that leave a lasting impression.</p>
             </div>
-            
-            <div class="tech-stack-grid">
-                <div class="tech-card hover-trigger">
-                    <i class="fab fa-html5" style="color: #e34f26;"></i>
-                    <span>HTML5</span>
-                </div>
-                <div class="tech-card hover-trigger">
-                    <i class="fab fa-css3-alt" style="color: #264de4;"></i>
-                    <span>CSS3</span>
-                </div>
-                <div class="tech-card hover-trigger">
-                    <i class="fab fa-js" style="color: #f7df1e;"></i>
-                    <span>JavaScript</span>
-                </div>
-                <div class="tech-card hover-trigger">
-                    <i class="fas fa-code" style="color: #659ad2;"></i>
-                    <span>C Lang</span>
-                </div>
-            </div>
+        </div>
+    </section>
 
+    <section id="skills-list" class="skills-section">
+        <div class="skills-list-container">
+            <span class="section-label">02. My Arsenal</span>
+            <h2 style="font-family: var(--font-display); font-size: 3rem; text-transform: uppercase;">Technical<br>Proficiency</h2>
+            
+            <div class="skills-grid-visual">
+                
+                <div class="visual-skill-card hover-trigger">
+                    <i class="fab fa-html5"></i>
+                    <h3>HTML5</h3>
+                </div>
+
+                <div class="visual-skill-card hover-trigger">
+                    <i class="fab fa-css3-alt"></i>
+                    <h3>CSS3</h3>
+                </div>
+
+                <div class="visual-skill-card hover-trigger">
+                    <i class="fab fa-js"></i>
+                    <h3>JavaScript</h3>
+                </div>
+
+                <div class="visual-skill-card hover-trigger">
+                    <i class="fas fa-code"></i>
+                    <h3>C Lang</h3>
+                </div>
+
+            </div>
         </div>
     </section>
 
     <section id="projects" class="projects-section">
         <div style="padding: 0 10vw; margin-bottom: 20px;">
-            <span class="section-label">02. Selected Works</span>
+            <span class="section-label">03. Selected Works</span>
         </div>
 
         <div class="project-nav">
-            <button class="nav-arrow hover-trigger" id="scroll-left">
-                <i class="fas fa-arrow-left"></i>
-            </button>
-            <button class="nav-arrow hover-trigger" id="scroll-right">
-                <i class="fas fa-arrow-right"></i>
-            </button>
+            <button class="nav-arrow hover-trigger" id="scroll-left"><i class="fas fa-arrow-left"></i></button>
+            <button class="nav-arrow hover-trigger" id="scroll-right"><i class="fas fa-arrow-right"></i></button>
         </div>
         
         <div class="projects-container" id="projects-container">
@@ -481,35 +495,13 @@
             </div>
 
             <div class="project-card hover-trigger">
-                <img src="https://images.unsplash.com/photo-1611606063065-ee7946f0787a?q=80&w=1000&auto=format&fit=crop" class="card-img" alt="Chat">
-                <div class="card-info">
-                    <div>
-                        <div class="card-tags">Socket / Node</div>
-                        <h3 class="card-title">Real-time<br>Chat App</h3>
-                    </div>
-                    <span class="card-num">04</span>
-                </div>
-            </div>
-
-            <div class="project-card hover-trigger">
                 <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1000&auto=format&fit=crop" class="card-img" alt="AI">
                 <div class="card-info">
                     <div>
                         <div class="card-tags">OpenAI API</div>
                         <h3 class="card-title">AI Image<br>Generator</h3>
                     </div>
-                    <span class="card-num">05</span>
-                </div>
-            </div>
-
-            <div class="project-card hover-trigger">
-                <img src="https://images.unsplash.com/photo-1642104704074-907c0698cbd9?q=80&w=1000&auto=format&fit=crop" class="card-img" alt="Crypto">
-                <div class="card-info">
-                    <div>
-                        <div class="card-tags">React / API</div>
-                        <h3 class="card-title">Crypto<br>Tracker</h3>
-                    </div>
-                    <span class="card-num">06</span>
+                    <span class="card-num">04</span>
                 </div>
             </div>
 
@@ -517,7 +509,7 @@
     </section>
 
     <footer id="contact">
-        <span class="section-label">03. What's Next?</span>
+        <span class="section-label">04. What's Next?</span>
         <h2 class="footer-title">Let's work<br>together</h2>
         <a href="mailto:pulkitaryaninfo@gmail.com" class="email-btn hover-trigger">pulkitaryaninfo@gmail.com</a>
         
