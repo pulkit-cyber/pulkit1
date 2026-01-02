@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pulkit Aryan Singh | The Experience</title>
+    
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
@@ -79,6 +81,29 @@
         }
         body.hovering .cursor { width: 80px; height: 80px; }
 
+        /* Scroll Progress Bar */
+        #progress-bar {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: var(--accent); width: 0%; z-index: 99999;
+        }
+
+        /* Preloader */
+        .preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); z-index: 10000;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 0.5s ease, visibility 0.5s;
+        }
+        .loader-spinner {
+            width: 50px; height: 50px;
+            border: 2px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .preloader.fade-out { opacity: 0; visibility: hidden; }
+
         /* =========================================
            3. HEADER
            ========================================= */
@@ -146,6 +171,8 @@
         }
         .hero-subtitle::before { content: ''; width: 60px; height: 2px; background: var(--accent); }
 
+        .typewriter-text { color: var(--accent); }
+
         .scroll-down {
             position: absolute; bottom: 40px; right: 60px;
             display: flex; align-items: center; gap: 15px;
@@ -209,10 +236,22 @@
            7. PROJECTS (Horizontal Scroll)
            ========================================= */
         .projects-section { padding: 150px 0; position: relative; z-index: 2; overflow: hidden; }
+        
+        .project-nav {
+            display: flex; justify-content: flex-end; gap: 15px; margin-bottom: 30px; padding-right: 10vw;
+        }
+        .nav-arrow {
+            width: 50px; height: 50px; border-radius: 50%; background: var(--glass);
+            border: 1px solid var(--border); color: var(--text);
+            display: flex; align-items: center; justify-content: center; cursor: none; transition: 0.3s;
+        }
+        .nav-arrow:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); transform: scale(1.1); }
+
         .projects-container {
             padding: 0 10vw; display: flex; gap: 40px; overflow-x: auto;
-            scroll-behavior: smooth; padding-bottom: 50px;
-            -ms-overflow-style: none; scrollbar-width: none;
+            /* Scroll fix for JS */
+            scroll-behavior: auto !important; 
+            padding-bottom: 50px; -ms-overflow-style: none; scrollbar-width: none;
         }
         .projects-container::-webkit-scrollbar { display: none; }
 
@@ -262,7 +301,23 @@
         .email-btn:hover::before { transform: scaleX(1); transform-origin: left; }
 
         /* =========================================
-           9. RESPONSIVE
+           9. MODALS & FORMS
+           ========================================= */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 2000;
+            opacity: 0; visibility: hidden; transition: 0.3s; display: flex; justify-content: center; align-items: center; padding: 20px;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-box {
+            background: var(--bg); border: 1px solid var(--border); padding: 40px; border-radius: 4px;
+            max-width: 600px; width: 100%; transform: scale(0.8); transition: 0.3s; position: relative;
+        }
+        .modal-overlay.active .modal-box { transform: scale(1); }
+        .close-btn { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 1.5rem; color: var(--text); }
+
+        /* =========================================
+           10. RESPONSIVE
            ========================================= */
         @media (max-width: 768px) {
             header { padding: 0 20px; }
@@ -285,6 +340,8 @@
 </head>
 <body>
 
+    <div class="preloader" id="preloader"><div class="loader-spinner"></div></div>
+    <div id="progress-bar"></div>
     <div class="noise-overlay"></div>
     <div class="ambient-light"></div>
     <div class="cursor" id="cursor"></div>
@@ -370,8 +427,17 @@
     </section>
 
     <section id="projects" class="projects-section">
-        <div style="padding: 0 10vw; margin-bottom: 40px;">
+        <div style="padding: 0 10vw; margin-bottom: 20px;">
             <span class="section-label">02. Selected Works</span>
+        </div>
+
+        <div class="project-nav">
+            <button class="nav-arrow hover-trigger" id="scroll-left">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <button class="nav-arrow hover-trigger" id="scroll-right">
+                <i class="fas fa-arrow-right"></i>
+            </button>
         </div>
         
         <div class="projects-container" id="projects-container">
@@ -412,7 +478,7 @@
                 <img src="https://images.unsplash.com/photo-1611606063065-ee7946f0787a?q=80&w=1000&auto=format&fit=crop" class="card-img" alt="Chat">
                 <div class="card-info">
                     <div>
-                        <div class="card-tags">WebSocket / Node</div>
+                        <div class="card-tags">Socket / Node</div>
                         <h3 class="card-title">Real-time<br>Chat App</h3>
                     </div>
                     <span class="card-num">04</span>
@@ -423,7 +489,7 @@
                 <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1000&auto=format&fit=crop" class="card-img" alt="AI">
                 <div class="card-info">
                     <div>
-                        <div class="card-tags">OpenAI / API</div>
+                        <div class="card-tags">OpenAI API</div>
                         <h3 class="card-title">AI Image<br>Generator</h3>
                     </div>
                     <span class="card-num">05</span>
@@ -455,8 +521,31 @@
         </div>
     </footer>
 
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-box">
+            <button class="close-btn" onclick="closeModal()"><i class="material-icons-round">close</i></button>
+            <h2 id="modal-title" style="margin-bottom: 15px;">Project Details</h2>
+            <p id="modal-desc" style="opacity: 0.8; line-height: 1.7;">This project was built using the latest web technologies to solve real-world problems.</p>
+        </div>
+    </div>
+
     <script>
-        // 1. CUSTOM CURSOR
+        // 1. PRELOADER
+        window.addEventListener("load", () => {
+            const preloader = document.getElementById("preloader");
+            preloader.classList.add("fade-out");
+            setTimeout(() => preloader.style.display = "none", 500);
+        });
+
+        // 2. SCROLL PROGRESS
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const progress = (scrollTop / scrollHeight) * 100;
+            document.getElementById('progress-bar').style.width = progress + "%";
+        });
+
+        // 3. CUSTOM CURSOR
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', (e) => {
             cursor.style.left = e.clientX + 'px';
@@ -468,7 +557,7 @@
             trigger.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
         });
 
-        // 2. PARALLAX EFFECT
+        // 4. PARALLAX EFFECT
         document.addEventListener('mousemove', (e) => {
             const x = (window.innerWidth - e.pageX * 2) / 100;
             const y = (window.innerHeight - e.pageY * 2) / 100;
@@ -477,14 +566,27 @@
             });
         });
 
-        // 3. HORIZONTAL SCROLL
+        // 5. HORIZONTAL SCROLL & BUTTONS
         const projectContainer = document.getElementById('projects-container');
+        const leftBtn = document.getElementById('scroll-left');
+        const rightBtn = document.getElementById('scroll-right');
+
+        // Fast Scroll on Wheel
         projectContainer.addEventListener('wheel', (evt) => {
             evt.preventDefault();
-            projectContainer.scrollLeft += evt.deltaY;
+            projectContainer.scrollLeft += evt.deltaY * 3;
+            projectContainer.scrollLeft += evt.deltaX * 3;
         });
 
-        // 4. THEME TOGGLE
+        // Buttons
+        rightBtn.addEventListener('click', () => {
+            projectContainer.scrollBy({ left: 450, behavior: 'smooth' });
+        });
+        leftBtn.addEventListener('click', () => {
+            projectContainer.scrollBy({ left: -450, behavior: 'smooth' });
+        });
+
+        // 6. THEME TOGGLE
         const themeBtn = document.getElementById('theme-toggle');
         const themeIcon = themeBtn.querySelector('span');
         const html = document.documentElement;
@@ -501,12 +603,20 @@
             themeIcon.innerText = next === 'dark' ? 'light_mode' : 'dark_mode';
         });
 
-        // 5. MOBILE MENU
+        // 7. MOBILE MENU
         const hamburger = document.getElementById('hamburger');
         const navLinks = document.getElementById('nav-links');
         hamburger.addEventListener('click', () => {
             navLinks.classList.toggle('active');
         });
+
+        // 8. MODAL LOGIC
+        const modalOverlay = document.getElementById('modal-overlay');
+        function closeModal() { modalOverlay.classList.remove('active'); }
+        // Add click events to project cards as needed to open modal
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.addEventListener('click', () => modalOverlay.classList.add('active'));
+        });
     </script>
 </body>
-    </html>
+</html>
