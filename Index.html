@@ -384,7 +384,6 @@
                         <h3 class="card-title">E-Commerce<br>Dashboard</h3>
                     </div>
                     <span class="card-num">01</span>
-                    <button style="background:none; border:none; color:var(--accent); font-family:var(--font-body); font-weight:600; cursor:none;" onclick="openModal('modal-1')">VIEW DETAILS</button>
                 </div>
             </div>
 
@@ -396,7 +395,6 @@
                         <h3 class="card-title">Weather<br>Application</h3>
                     </div>
                     <span class="card-num">02</span>
-                    <button style="background:none; border:none; color:var(--accent); font-family:var(--font-body); font-weight:600; cursor:none;" onclick="openModal('modal-2')">VIEW DETAILS</button>
                 </div>
             </div>
 
@@ -408,43 +406,39 @@
                         <h3 class="card-title">Task<br>Manager</h3>
                     </div>
                     <span class="card-num">03</span>
-                    <button style="background:none; border:none; color:var(--accent); font-family:var(--font-body); font-weight:600; cursor:none;" onclick="openModal('modal-3')">VIEW DETAILS</button>
                 </div>
             </div>
 
             <div class="project-card hover-trigger">
-                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=1000&auto=format&fit=crop" class="card-img" alt="Algo">
+                <img src="https://images.unsplash.com/photo-1611746347164-c9291e0da675?q=80&w=1000&auto=format&fit=crop" class="card-img" alt="Chat">
                 <div class="card-info">
                     <div>
-                        <div class="card-tags">JS / Logic</div>
-                        <h3 class="card-title">Algorithm<br>Visualizer</h3>
-                    </div>
-                    <span class="card-num">04</span>
-                    <button style="background:none; border:none; color:var(--accent); font-family:var(--font-body); font-weight:600; cursor:none;" onclick="openModal('modal-4')">VIEW DETAILS</button>
-                </div>
-            </div>
-
-            <div class="project-card hover-trigger">
-                <img src="https://images.unsplash.com/photo-1611606063065-ee7946f0787a?q=80&w=1000&auto=format&fit=crop" class="card-img" alt="Chat">
-                <div class="card-info">
-                    <div>
-                        <div class="card-tags">Node / Socket</div>
+                        <div class="card-tags">Socket.io / Node</div>
                         <h3 class="card-title">Real-time<br>Chat App</h3>
                     </div>
-                    <span class="card-num">05</span>
-                    <button style="background:none; border:none; color:var(--accent); font-family:var(--font-body); font-weight:600; cursor:none;" onclick="openModal('modal-5')">VIEW DETAILS</button>
+                    <span class="card-num">04</span>
                 </div>
             </div>
 
             <div class="project-card hover-trigger">
-                <img src="https://images.unsplash.com/photo-1574375927938-d5a98e8efe30?q=80&w=1000&auto=format&fit=crop" class="card-img" alt="Clone">
+                <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=1000&auto=format&fit=crop" class="card-img" alt="AI">
                 <div class="card-info">
                     <div>
-                        <div class="card-tags">HTML / CSS</div>
-                        <h3 class="card-title">Netflix<br>UI Clone</h3>
+                        <div class="card-tags">OpenAI API</div>
+                        <h3 class="card-title">AI Image<br>Generator</h3>
+                    </div>
+                    <span class="card-num">05</span>
+                </div>
+            </div>
+
+            <div class="project-card hover-trigger">
+                <img src="https://images.unsplash.com/photo-1642104704074-907c0698cbd9?q=80&w=1000&auto=format&fit=crop" class="card-img" alt="Crypto">
+                <div class="card-info">
+                    <div>
+                        <div class="card-tags">API / React</div>
+                        <h3 class="card-title">Crypto<br>Tracker</h3>
                     </div>
                     <span class="card-num">06</span>
-                    <button style="background:none; border:none; color:var(--accent); font-family:var(--font-body); font-weight:600; cursor:none;" onclick="openModal('modal-6')">VIEW DETAILS</button>
                 </div>
             </div>
 
@@ -514,19 +508,6 @@
         hamburger.addEventListener('click', () => {
             navLinks.classList.toggle('active');
         });
-
-        // 6. MODAL LOGIC (Placeholder alert for demo purposes)
-        function openModal(id) {
-            const projects = {
-                'modal-1': 'E-Commerce: Full responsive shopping cart logic.',
-                'modal-2': 'Weather App: Live API data fetching.',
-                'modal-3': 'Task Manager: CRUD operations with LocalStorage.',
-                'modal-4': 'Algorithm Visualizer: Visualizing sorting algorithms in real-time.',
-                'modal-5': 'Chat App: Real-time messaging using Socket.io.',
-                'modal-6': 'Netflix Clone: High-fidelity UI replication.'
-            };
-            alert(projects[id] || "Project Details");
-        }
     </script>
 </body>
             </html>
