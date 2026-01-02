@@ -27,9 +27,10 @@
             --secondary: #7000ff;
             --glass: rgba(255, 255, 255, 0.03);
             --border: rgba(255, 255, 255, 0.1);
-            --cursor-bg: #fff;
             --blob-color: rgba(112,0,255,0.15);
             --noise-opacity: 0.07;
+            /* Cursor must be WHITE to show as WHITE on Dark BG with 'difference' */
+            --cursor-bg: #ffffff; 
         }
 
         [data-theme="light"] {
@@ -39,9 +40,10 @@
             --secondary: #ccff00;
             --glass: rgba(255, 255, 255, 0.6);
             --border: rgba(0, 0, 0, 0.1);
-            --cursor-bg: #000;
             --blob-color: rgba(85, 0, 255, 0.1);
             --noise-opacity: 0.04;
+            /* Cursor must be WHITE to show as BLACK on Light BG with 'difference' */
+            --cursor-bg: #ffffff; 
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
@@ -75,9 +77,13 @@
 
         .cursor {
             position: fixed; top: 0; left: 0; width: 20px; height: 20px;
-            background: var(--cursor-bg); border-radius: 50%; pointer-events: none; z-index: 9999;
-            transform: translate(-50%, -50%); mix-blend-mode: difference;
-            transition: width 0.3s, height 0.3s;
+            background: var(--cursor-bg); 
+            border-radius: 50%; 
+            pointer-events: none; 
+            z-index: 9999;
+            transform: translate(-50%, -50%); 
+            mix-blend-mode: difference; /* This inverts colors */
+            transition: width 0.3s, height 0.3s, transform 0.1s;
         }
         body.hovering .cursor { width: 80px; height: 80px; }
 
